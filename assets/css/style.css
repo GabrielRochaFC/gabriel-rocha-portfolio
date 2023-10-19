@@ -1,23 +1,26 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* FAZENDO IMPORT DA FONTE */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
 * {
+    /* DEFININDO ALGUMAS VARIÁVEIS PARA USAR MAIS FACILMENTE */
     --azul-escuro: #001064;
     --azul: #052887;
     --blue-dark: #142850;
     --branco: #FFF;
     --dark: #21243D;
     --gradiente-azul: linear-gradient(78deg, #001064 0%, #0A3DA4 100%);
+    --gray-5: #E0E0E0;
+    --laranja: #FF6B00;
     --light: #8695A4;
     --transparente: #5350ff00;
-    --gray-5: #E0E0E0;
 }
-
+/* ==========
+    GERAL
+========== */
 body{
     background: var(--gradiente-azul);
     background-size: 100vw 75vh;
     background-repeat: no-repeat;
-    /* font-family: 'Heebo', sans-serif; */
     font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
@@ -33,6 +36,9 @@ main{
     flex-direction: column;
     gap: 4rem;
     margin-bottom: 4rem;
+}
+button:active{
+    filter: brightness(1.25);
 }
 .section__title{
     font-size: 2.5rem;
@@ -59,6 +65,15 @@ main{
 }
 .section__subtitle--white{
     color: var(--branco);
+}
+/* MEDIA QUERIES GERAL */
+@media screen and (max-width: 68.75rem) {
+    .container{
+        width: 90%;
+    }
+    .section__title--white, .section__title{
+        font-size: 1.75rem;
+    }
 }
 
 /* ==========
@@ -95,6 +110,23 @@ main{
     font-style: normal;
     font-weight: 700;
 }
+.header__menu__ul__link:active{
+    filter: opacity(0.75);
+}
+.header__menu-hamburguer{
+    font-size: 1.25rem;
+    display: none;
+    cursor: pointer;
+}
+/* MEDIA QUERIES DO HEADER */
+@media screen and (max-width: 68.75rem) {
+    .header__menu-hamburguer{
+        display: block;
+    }
+    .header__menu{
+        display: none;
+    }
+}
 
 /* ==========
     PRESENTATION
@@ -118,6 +150,10 @@ main{
 .content__texts__title{
     font-size: 2.5rem;
 }
+.content__texts__title span{
+    color: var(--laranja);
+    font-style: italic;
+}
 .content__texts_paragraph{
     font-size: 1.25rem;
     line-height: 1.75rem;
@@ -133,7 +169,7 @@ main{
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     border: 2px solid var(--branco);
-    transition: transform 250ms ease;
+    transition: all 250ms ease;
     font-weight: 500;
 }
 
@@ -142,14 +178,25 @@ main{
     transform: scale(1.1);
 }
 
-.content__texts__button--blue{
-    color: var(--azul);
-    background: var(--branco);
+.content__texts__button--orange{
+    color: var(--branco);
+    background: var(--laranja);
+    border-color: var(--laranja);
+}
+
+.content__texts__button--orange:hover{
+    color: var(--laranja);
+    background-color: var(--branco);
+    border-color: var(--branco);
 }
 
 .content__texts__button--transparent{
     background: var(--transparente);
     color: var(--branco);
+}
+.content__texts__button--transparent:hover{
+    background: var(--branco);
+    color: var(--azul);
 }
 
 .content__image{
@@ -163,7 +210,35 @@ main{
 .content__image:hover{
     transform: scale(1.1);
 }
-
+/* MEDIA QUERIES SOBRE MIM */
+@media screen and (max-width: 68.75rem) {
+    .presentation{
+        flex-direction: column-reverse;
+        justify-content: center;
+        gap: 1.75rem;
+    }
+    .content__image{
+        width: 9.375rem;
+        height: 9.375rem;
+    }
+    .content__texts{
+        align-items: stretch;
+    }
+    .content__texts__title {
+        font-size: 1.75rem;
+    }
+    .content__texts_paragraph{
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+        text-align: justify;
+    }
+    .content__texts__buttons{
+        flex-direction: column;
+    }
+    .content__texts__button{
+        width: 100%;
+    }
+}
 /* ==========
     HABILIDADES
 ========== */
@@ -181,6 +256,7 @@ main{
     width: 3.125rem;
     height: 3.125rem;
 }
+/* COLOCANDO IMAGENS DENTRO DOS CARDS */
 .habilidades__imagem--html, .habilidades__imagem--css,
 .habilidades__imagem--javascript, .habilidades__imagem--poo,
 .habilidades__imagem--bootstrap, .habilidades__imagem--python,
@@ -282,7 +358,7 @@ main{
 .portfolio__project__data{
     padding: 0rem 0.5rem;
     border-radius: 1rem;
-    background-color: var(--blue-dark);
+    background-color: var(--laranja);
     color: var(--branco);
     font-size: 1.125rem;
     font-weight: 700;
@@ -362,6 +438,21 @@ main{
     opacity: 1;
     transition: opacity 0.3s;
 }
+/* MEDIA QUERIES PORTFOLIO */
+@media screen and (max-width: 68.75rem) {
+    .portfolio__project{
+        grid-template-columns: auto;
+        column-gap: 0;
+    }
+    .portfolio__project__texts {
+        row-gap: 0.5rem;
+        column-gap: 0.5rem;
+    }
+    .portfolio_project__title {
+        font-size: 1.75rem;
+        text-align: left;
+    }
+}
 /* ==========
     FORMAÇÃO EDUCACIONNAL
 ========== */
@@ -409,6 +500,25 @@ main{
     font-size: 2rem;
     font-weight: 700;
     margin: 1.5rem 0rem;
+}
+/* MEDIA QUERIES FORMAÇÃO */
+@media screen and (max-width: 68.75rem) {
+    .faculdades{
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .faculdade{
+        align-items: center;
+    }
+    .certificados, .idiomas{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        row-gap: 1rem;
+    }
+    .formacao__categoria__titulo{
+        font-size: 1.5rem;
+    }
 }
 
 /* ==========
@@ -468,13 +578,15 @@ footer{
     border-radius: 0.3125rem;
     border: none;
     cursor: pointer;
-    transition: transform 250ms ease;
+    transition: all 250ms ease;
     font-size: 1.25rem;
     font-weight: 600;
 }
 
 .contato-form__submit-button:hover {
     transform: scale(1.1);
+    background-color: var(--laranja);
+    color: var(--branco);
 }
 .contato-form__field:last-child{
     align-self: center;
