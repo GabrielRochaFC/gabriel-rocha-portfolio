@@ -16,34 +16,271 @@
 </head>
 
 <body>
-    <header>
-        <div class="header">
-            <nav class="header__menu">
-                <ul class="header__menu__ul">
-                    <li class="header__menu__li"><a href="#" class="header__menu__ul__link">Sobre mim</a></li>
-                    <li class="header__menu__li"><a href="#" class="header__menu__ul__link">Habilidades</a></li>
-                    <li class="header__menu__li"><a href="#" class="header__menu__ul__link">Portifólio</a></li>
-                    <li class="header__menu__li"><a href="#" class="header__menu__ul__link">Qualificações</a></li>
-                    <li class="header__menu__li"><a href="#" class="header__menu__ul__link">Contato</a></li>
-                </ul>
-            </nav>
-            <div class="header__content">
-                <div class="content__texts">
-                    <h1 class="content__texts__title">Olá, eu sou o Gabriel Rocha!</h1>
-                    <p class="content__texts_paragraph">Sou um Desenvolvedor Front-End apaixonado por criar interfaces
-                        interativas e otimizar a experiência do usuário. Atualmente, estou cursando análise e
-                        desenvolvimento de sistemas, buscando aprimorar minhas habilidades técnicas e conhecimentos em
-                        desenvolvimento web.</p>
-                    <div class="content__texts__buttons">
-                        <button class="content__texts__button content__texts__button--blue">Baixar CV</button>
+    <header class="header container">
+        <nav class="header__menu">
+            <ul class="header__menu__ul">
+                <li class="header__menu__li"><a href="#sobre-mim" class="header__menu__ul__link">Sobre mim</a></li>
+                <li class="header__menu__li"><a href="#habilidades" class="header__menu__ul__link">Habilidades</a></li>
+                <li class="header__menu__li"><a href="#portfolio" class="header__menu__ul__link">Portifólio</a></li>
+                <li class="header__menu__li"><a href="#formacao" class="header__menu__ul__link">Formação Educacional</a>
+                </li>
+                <li class="header__menu__li"><a href="#contato" class="header__menu__ul__link">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="presentation container" id="sobre-mim">
+            <div class="content__texts">
+                <h1 class="content__texts__title">Olá, eu sou o Gabriel Rocha!</h1>
+                <p class="content__texts_paragraph">Sou um Desenvolvedor Front-End apaixonado por criar interfaces
+                    interativas e otimizar a experiência do usuário. Atualmente, estou cursando análise e
+                    desenvolvimento de sistemas, buscando aprimorar minhas habilidades técnicas e conhecimentos em
+                    desenvolvimento web.</p>
+                <div class="content__texts__buttons">
+                    <a href="https://bit.ly/curriculogrfcdownload2023">
+                        <button class="content__texts__button content__texts__button--blue">Baixar CV <i
+                                class="fa fa-arrow-down" aria-hidden="true"></i></button>
+                    </a>
+                    <a href="mailto:gabriel.rocha20@live.com">
                         <button class="content__texts__button content__texts__button--transparent">Entrar em
-                            contato</button>
+                            contato <i class="fa fa-envelope" aria-hidden="true"></i></button>
+                    </a>
+                </div>
+            </div>
+            <div><img src="assets/img/IMG_9411.jpg" alt="foto" class="content__image"></div>
+        </section>
+        <section class="habilidades container" id="habilidades">
+            <h2 class="section__title"><i class="fa fa-wrench" aria-hidden="true"></i> Habilidades</h2>
+            <h3 class="section__subtitle">As ferramentas que impulsionam meu trabalho</h3>
+            <div class="habilidades__cards">
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--html"></div>
+                    <p class="habilidades__nome">HTML5</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--css"></div>
+                    <p class="habilidades__nome">CSS3</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--javascript"></div>
+                    <p class="habilidades__nome">JavaScript</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--poo"></div>
+                    <p class="habilidades__nome">P.O.O.</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--bootstrap"></div>
+                    <p class="habilidades__nome">Bootstrap</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--python"></div>
+                    <p class="habilidades__nome">Python</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--django"></div>
+                    <p class="habilidades__nome">Django</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--php"></div>
+                    <p class="habilidades__nome">PHP</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--uiux"></div>
+                    <p class="habilidades__nome">UX & UI</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--figma"></div>
+                    <p class="habilidades__nome">FIGMA</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--mysql"></div>
+                    <p class="habilidades__nome">MySQL</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--git"></div>
+                    <p class="habilidades__nome">GIT</p>
+                </div>
+                <div class="habilidades__card">
+                    <div class="habilidades__imagem habilidades__imagem--github"></div>
+                    <p class="habilidades__nome">Guthub</p>
+                </div>
+            </div>
+        </section>
+        <section class="portfolio container" id="portfolio">
+            <h2 class="section__title"><i class="fa fa-folder-open" aria-hidden="true"></i> Portfólio</h2>
+            <h3 class="section__subtitle">Uma Coleção dos projetos que eu amei criar</h3>
+            <div class="portfolio__projects">
+                <div class="portfolio__project">
+                    <a href="https://gabrielrochafc.github.io/Starbucks_projeto/" target="_blank"
+                        class="portfolio__project__img">
+                        <img src="./assets/img/site_1.png" alt="Starbucks Happy Hour" class="portfolio__project__img">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Visitar Site <i class="fa fa-arrow-circle-right"
+                                    aria-hidden="true"></i></span>
+                        </div>
+                    </a>
+                    <div class="portfolio__project__texts">
+                        <h4 class="portfolio_project__title">Starbucks - Happy Hour 🍹</h4>
+                        <span class="portfolio__project__data">04/2023</span><span
+                            class="portfolio__project__type">Homepage</span>
+                        <p class="portfolio__project__description">Este é o projeto "Starbucks - Happy Hour"
+                            desenvolvido durante o curso de responsividade da B7Web. O objetivo deste projeto é praticar
+                            e aprimorar as habilidades de criação de layouts responsivos para diferentes dispositivos e
+                            tamanhos de tela.</p>
                     </div>
                 </div>
-                <div><img src="assets/img/IMG_9411.jpg" alt="foto" class="content__image"></div>
+                <div class="portfolio__division"></div>
+                <div class="portfolio__project">
+                    <a href="https://gabrielrochafc.github.io/Medicenter/" class="portfolio__project__img"
+                        target="_blank">
+                        <img src="./assets/img/site_2.png" alt="Medicenter- Hospital">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Visitar Site <i class="fa fa-arrow-circle-right"
+                                    aria-hidden="true"></i> </span>
+                        </div>
+                    </a>
+                    <div class="portfolio__project__texts">
+                        <h4 class="portfolio_project__title">Medicenter - Hospital 👨‍⚕️🏥</h4>
+                        <span class="portfolio__project__data">03/2023</span><span
+                            class="portfolio__project__type">Homepage</span>
+                        <p class="portfolio__project__description">Este é um projeto de website chamado Medicenter,
+                            desenvolvido com o objetivo de aprimorar habilidades em mobile-first, flexbox e grid. O
+                            layout do site foi todo criado no Figma e as tecnologias utilizadas foram HTML, CSS e
+                            JavaScript.</p>
+                    </div>
+                </div>
+                <div class="portfolio__division"></div>
+                <div class="portfolio__project">
+                    <a href="https://gabrielrochafc.github.io/HZC/" class="portfolio__project__img" target="_blank">
+                        <img src="./assets/img/site_3.png" alt="HZC - Site" class="portfolio__project__img">
+                        <div class="image-overlay">
+                            <span class="overlay-text">Visitar Site <i class="fa fa-arrow-circle-right"
+                                    aria-hidden="true"></i></span>
+                        </div>
+                    </a>
+                    <div class="portfolio__project__texts">
+                        <h4 class="portfolio_project__title">HZC - Site 💻</h4>
+                        <span class="portfolio__project__data">01/2023</span><span
+                            class="portfolio__project__type">Homepage</span>
+                        <p class="portfolio__project__description">Este é o projeto final do curso "CSS: dispondo
+                            elementos com Flexbox e Grid" da escola de programação Alura. O objetivo deste
+                            projeto é entender melhor o funcionamento do mobile-first, flexbox e do grid, para
+                            desenvolvimento de layouts responsivos.</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </header>
+            <a href="https://github.com/GabrielRochaFC" target="_blank">
+                <button class="portfolio__link--github">Ver mais
+                    projetos no Github <i class="fa fa-github" aria-hidden="true"></i></button></a>
+        </section>
+        <section class="formacao container" id="formacao">
+            <h2 class="section__title"><i class="fa fa-pencil" aria-hidden="true"></i> Formação Educacional</h2>
+            <h3 class="section__subtitle">Formação e Aprendizado</h3>
+            <div class="formacao__categoria">
+                <h4 class="formacao__categoria__titulo">Faculdade</h4>
+                <div class="faculdades">
+                    <div class="faculdade">
+                        <h5 class="faculdade__graduacao">Tecnologia em Análise e Desenvolvimento de Sistemas</h5>
+                        <p class="faculdade__instituicao">Centro Universitário Internacional UNINTER</p>
+                        <span class="faculdade__data"> <i class="fa fa-calendar-o" aria-hidden="true"></i> 03/2023 -
+                            Cursando</span>
+                    </div>
+                    <div class="faculdade">
+                        <h5 class="faculdade__graduacao">Engenharia Automotiva</h5>
+                        <p class="faculdade__instituicao">Universidade de Brasília (UnB)</p>
+                        <span class="faculdade__data"> <i class="fa fa-calendar-o" aria-hidden="true"></i> 08/2018 -
+                            Incompleto | Brasília, Brasil</span>
+                    </div>
+                </div>
+
+                <h4 class="formacao__categoria__titulo">Certificados</h4>
+                <div class="certificados">
+                    <a class="certificado--link"
+                        href="https://cursos.alura.com.br/user/gabriel-rocha20/fullCertificate/9891530f7b5fed9938fbe916da7850c7"
+                        target="_blank">
+                        <div class="certificado">
+                            <h5 class="certificado__nome">Escola de Programação Alura</h5>
+                            <p class="certificado__descricao">UX & Design, Front-end, Programação e Inovação & Gestão
+                            </p>
+                        </div>
+                    </a>
+                    <a class="certificado--link" href="https://bit.ly/48ZXrFR">
+                        <div class="certificado">
+                            <h5 class="certificado__nome">Onebitcode</h5>
+                            <p class="certificado__descricao">Desenvolvimento Web</p>
+                        </div>
+                    </a>
+                    <a class="certificado--link" href="https://bit.ly/45GaI3s">
+                        <div class="certificado">
+                            <h5 class="certificado__nome">B7Web</h5>
+                            <p class="certificado__descricao">Desenvolvimento Web</p>
+                        </div>
+                    </a>
+                </div>
+
+                <h4 class="formacao__categoria__titulo">Idiomas</h4>
+                <div class="idiomas">
+                    <div class="idioma">
+                        <h5 class="idioma__nome">Inglês</h5>
+                        <p class="idioma__nivel">Avançado</p>
+                    </div>
+                    <div class="idioma">
+                        <h5 class="idioma__nome">Português</h5>
+                        <p class="idioma__nivel">Língua materna</p>
+                    </div>
+                    <div class="idioma">
+                        <h5 class="idioma__nome">Espanhol</h5>
+                        <p class="idioma__nivel">Básico</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <section class="contato-form container" id="contato">
+            <h2 class="section__title--white"> <i class="fa fa-envelope" aria-hidden="true"></i> Contato
+            </h2>
+            <h3 class="section__subtitle section__subtitle--white">Envie-me uma mensagem</h3>
+            <form class="contato-form__form" action="" method="">
+                <div class="contato-form__field">
+                    <label for="nome" class="contato-form__label">Nome</label>
+                    <input type="text" id="nome" name="nome" class="contato-form__input"
+                        placeholder="Exemplo: João Silva" required>
+                </div>
+                <div class="contato-form__field">
+                    <label for="email" class="contato-form__label">Email</label>
+                    <input type="email" id="email" name="email" class="contato-form__input"
+                        placeholder="Exemplo: exemplo@email.com" required>
+                </div>
+                <div class="contato-form__field">
+                    <label for="assunto" class="contato-form__label">Assunto</label>
+                    <input type="text" id="assunto" name="assunto" class="contato-form__input"
+                        placeholder="Exemplo: Dúvida sobre o site" required>
+                </div>
+                <div class="contato-form__field">
+                    <label for="mensagem" class="contato-form__label">Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" class="contato-form__textarea"
+                        placeholder="Escreva sua mensagem aqui" required></textarea>
+                </div>
+                <div class="contato-form__field">
+                    <button type="submit" class="contato-form__submit-button">Enviar <i class="fa fa-paper-plane"
+                            aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
+        </section>
+        <section class="socials">
+            <a href="https://www.instagram.com/gabriiel.rocha44/" class="socials__icons"><i class="fa fa-instagram"
+                    aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/gabriel-rocha-28ab8414b?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B9hHhkQ6%2BQLyh8QMwEyqAjg%3D%3D"
+                class="socials__icons"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+            <a href="https://github.com/GabrielRochaFC" class="socials__icons"><i class="fa fa-github-square"
+                    aria-hidden="true"></i></a>
+            <div class="socials__credits">Developed with ♥ by Gabriel Rocha</div>
+        </section>
+    </footer>
+
 </body>
 
 </html>
