@@ -89,7 +89,7 @@ export function Terminal() {
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const pinnedRef = useRef(true);
+  const pinnedRef = useRef(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const bufferRef = useRef<HTMLDivElement>(null);
@@ -241,6 +241,7 @@ export function Terminal() {
       setLang(result.lang);
     }
     const commandId = nextId();
+    pinnedRef.current = true;
     setEntries((previous) => {
       if (result.clear) return [];
       return [...previous, { id: commandId, cwd: ranAt, command, blocks: result.blocks }];
@@ -367,8 +368,8 @@ export function Terminal() {
 
   return (
     <main className="session" onClick={onSessionClick}>
-      <Summary lang={lang} />
       <div className="buffer" onScroll={onBufferScroll} ref={bufferRef}>
+        <Summary lang={lang} />
         <div aria-live="polite" aria-relevant="additions" role="log">
           {phase === "boot" ? (
             <div className="entry">
