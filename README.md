@@ -1,6 +1,6 @@
 # Gabriel Rocha
 
-Portfólio em forma de shell. A sessão abre em inglês. O conteúdo vem do perfil público do GitHub e dos projetos que já estavam publicados.
+Portfólio em forma de shell. O resumo fica em cima e o terminal, embaixo, começa no topo da área e cresce com o scroll. Um clique em qualquer lugar da tela foca o comando. O cursor é o bloco que pisca. A sessão abre em inglês. O conteúdo vem do perfil público do GitHub e dos projetos que já estavam publicados.
 
 ## Local
 
