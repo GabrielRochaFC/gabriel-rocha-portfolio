@@ -9,17 +9,20 @@ import {
   useState,
 } from "react";
 import { profile } from "../content/profile";
-import type { Block, ThemeName } from "../lib/types";
+import type { Block, Lang, ThemeName } from "../lib/types";
 import {
-  BOOT_LINES,
+  bootLines,
   complete,
   displayPath,
+  isLang,
   isThemeName,
+  motd,
   runCommand,
 } from "../lib/shell";
-import { BlockView, commandEcho } from "./blocks";
+import { Blocks } from "./blocks";
 
 const THEME_KEY = "gr-theme";
+const LANG_KEY = "gr-lang";
 const BOOT_KEY = "gr-booted";
 
 type Entry = {
@@ -29,8 +32,6 @@ type Entry = {
   blocks: Block[];
 };
 
-const SHORTCUTS = ["help", "projects", "skills", "contact"] as const;
-
 function readStoredTheme(): ThemeName {
   try {
     const stored = localStorage.getItem(THEME_KEY);
@@ -39,6 +40,20 @@ function readStoredTheme(): ThemeName {
     return "gruvbox";
   }
   return "gruvbox";
+}
+
+function readStoredLang(): Lang {
+  try {
+    const stored = localStorage.getItem(LANG_KEY);
+    if (stored && isLang(stored)) return stored;
+  } catch {
+    return "en";
+  }
+  return "en";
+}
+
+function htmlLang(lang: Lang): string {
+  return lang === "pt" ? "pt-BR" : "en";
 }
 
 function openExternal(url: string) {
@@ -51,17 +66,27 @@ function openExternal(url: string) {
   anchor.click();
 }
 
+function Echo({ cwd, command }: { cwd: string; command: string }) {
+  return (
+    <p className="echo">
+      <span className="tone-amber">{profile.user}</span>
+      <span className="tone-muted">@{profile.host}</span>{" "}
+      <span className="tone-path">{displayPath(cwd)}</span>{" "}
+      <span className="tone-amber">$</span> {command}
+    </p>
+  );
+}
+
 export function Terminal() {
   const [phase, setPhase] = useState<"boot" | "ready">("boot");
-  const [bootLines, setBootLines] = useState<readonly string[]>([]);
+  const [bootShown, setBootShown] = useState<readonly string[]>([]);
   const [entries, setEntries] = useState<Entry[]>([]);
   const [cwd, setCwd] = useState("/");
-  const [theme, setTheme] = useState<ThemeName>("gruvbox");
+  const [lang, setLang] = useState<Lang>("en");
   const [input, setInput] = useState("");
   const [ok, setOk] = useState(true);
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [clock, setClock] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const bufferRef = useRef<HTMLDivElement>(null);
@@ -69,11 +94,12 @@ export function Terminal() {
   const draftRef = useRef("");
   const skipBootRef = useRef<(pending?: string) => void>(() => {});
   const cwdRef = useRef(cwd);
-  const themeRef = useRef(theme);
+  const themeRef = useRef<ThemeName>("gruvbox");
+  const langRef = useRef(lang);
   const phaseRef = useRef(phase);
 
   cwdRef.current = cwd;
-  themeRef.current = theme;
+  langRef.current = lang;
   phaseRef.current = phase;
 
   function nextId(): string {
@@ -82,22 +108,13 @@ export function Terminal() {
   }
 
   useEffect(() => {
-    const stored = readStoredTheme();
-    setTheme(stored);
-    document.documentElement.dataset.theme = stored;
-  }, []);
-
-  useEffect(() => {
-    const format = () =>
-      new Intl.DateTimeFormat("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "America/Sao_Paulo",
-        hourCycle: "h23",
-      }).format(new Date());
-    setClock(format());
-    const timer = window.setInterval(() => setClock(format()), 30_000);
-    return () => window.clearInterval(timer);
+    const storedTheme = readStoredTheme();
+    const storedLang = readStoredLang();
+    setLang(storedLang);
+    themeRef.current = storedTheme;
+    langRef.current = storedLang;
+    document.documentElement.dataset.theme = storedTheme;
+    document.documentElement.lang = htmlLang(storedLang);
   }, []);
 
   useEffect(() => {
@@ -125,6 +142,11 @@ export function Terminal() {
       seen = false;
     }
 
+    const sessionLang = readStoredLang();
+    langRef.current = sessionLang;
+    setLang(sessionLang);
+    const script = bootLines(sessionLang);
+
     let cancelled = false;
     let done = false;
     let timer = 0;
@@ -137,14 +159,14 @@ export function Terminal() {
       try {
         sessionStorage.setItem(BOOT_KEY, "1");
       } catch {
-        // sessão privada
+        // private mode
       }
       setPhase("ready");
       setEntries([
         {
           id: String(++idRef.current),
           cwd: "/",
-          blocks: [{ kind: "neofetch" }],
+          blocks: motd(langRef.current),
         },
       ]);
       if (pending && inputRef.current) {
@@ -174,8 +196,8 @@ export function Terminal() {
     let count = 0;
     timer = window.setInterval(() => {
       count += 1;
-      setBootLines(BOOT_LINES.slice(0, count));
-      if (count >= BOOT_LINES.length) startReady();
+      setBootShown(script.slice(0, count));
+      if (count >= script.length) startReady();
     }, 160);
     window.addEventListener("keydown", onKey, true);
 
@@ -190,29 +212,39 @@ export function Terminal() {
     const buffer = bufferRef.current;
     if (!buffer) return;
     buffer.scrollTop = buffer.scrollHeight;
-  }, [entries, bootLines, phase]);
+  }, [entries, bootShown, phase]);
 
   function execute(command: string, duringBoot: boolean) {
     const ranAt = cwdRef.current;
-    const result = runCommand(command, ranAt, themeRef.current);
+    const langAt = langRef.current;
+    const result = runCommand(command, ranAt, themeRef.current, langAt);
     if (result.theme) {
       document.documentElement.dataset.theme = result.theme;
       try {
         localStorage.setItem(THEME_KEY, result.theme);
       } catch {
-        // sessão privada
+        // private mode
       }
-      setTheme(result.theme);
+      themeRef.current = result.theme;
     }
+    if (result.lang) {
+      document.documentElement.lang = htmlLang(result.lang);
+      try {
+        localStorage.setItem(LANG_KEY, result.lang);
+      } catch {
+        // private mode
+      }
+      langRef.current = result.lang;
+      setLang(result.lang);
+    }
+    const commandId = nextId();
+    const homeId = duringBoot ? nextId() : "";
     setEntries((previous) => {
       if (result.clear) return [];
-      const home: Entry = {
-        id: nextId(),
-        cwd: "/",
-        blocks: [{ kind: "neofetch" }],
-      };
-      const base = duringBoot ? [home] : previous;
-      return [...base, { id: nextId(), cwd: ranAt, command, blocks: result.blocks }];
+      const base = duringBoot
+        ? [{ id: homeId, cwd: "/", blocks: motd(langAt) }]
+        : previous;
+      return [...base, { id: commandId, cwd: ranAt, command, blocks: result.blocks }];
     });
     setCwd(result.cwd);
     setOk(result.ok !== false);
@@ -309,20 +341,11 @@ export function Terminal() {
 
   return (
     <main className="session">
-      <header className="status">
-        <p className="sr-only">Gabriel Rocha, desenvolvedor full stack</p>
-        <p className="status-id">
-          <span className="tone-amber">{profile.user}</span>
-          <span className="tone-muted">@{profile.host}</span>
-        </p>
-        <p className="status-path tone-path">{displayPath(cwd)}</p>
-        <p className="time">{clock}</p>
-      </header>
-
+      <h1 className="sr-only">Gabriel Rocha</h1>
       <div className="buffer" ref={bufferRef} role="log" aria-live="polite" aria-relevant="additions">
         {phase === "boot" ? (
           <div className="entry">
-            {bootLines.map((line) => (
+            {bootShown.map((line) => (
               <p key={line} className="line tone-muted">
                 {line}
               </p>
@@ -331,24 +354,14 @@ export function Terminal() {
         ) : (
           entries.map((entry) => (
             <article key={entry.id} className="entry">
-              {entry.command !== undefined ? commandEcho(displayPath(entry.cwd), entry.command) : null}
-              {entry.blocks.map((block, index) => (
-                <BlockView key={`${entry.id}-${index}`} block={block} onRun={submitCommand} />
-              ))}
+              {entry.command !== undefined ? <Echo command={entry.command} cwd={entry.cwd} /> : null}
+              <Blocks blocks={entry.blocks} />
             </article>
           ))
         )}
       </div>
 
-      <nav className="shortcuts" aria-label="atalhos">
-        {SHORTCUTS.map((command) => (
-          <button key={command} type="button" className="chip" onClick={() => submitCommand(command)}>
-            {command}
-          </button>
-        ))}
-      </nav>
-
-      <form className="prompt" onSubmit={onSubmit} aria-label="linha de comando">
+      <form className="prompt" onSubmit={onSubmit} aria-label={lang === "pt" ? "linha de comando" : "command line"}>
         <p className="prompt-label">
           <span className="tone-amber">{profile.user}</span>
           <span className="tone-muted">@{profile.host}</span>{" "}
@@ -363,7 +376,7 @@ export function Terminal() {
             setHistoryIndex(-1);
           }}
           onKeyDown={onKeyDown}
-          aria-label="Comando"
+          aria-label={lang === "pt" ? "Comando" : "Command"}
           autoCapitalize="none"
           autoComplete="off"
           autoCorrect="off"

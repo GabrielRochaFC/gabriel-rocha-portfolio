@@ -56,7 +56,7 @@ body {
 
 body {
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.45;
   text-rendering: optimizeLegibility;
 }
 
@@ -82,14 +82,13 @@ button {
 a {
   font: inherit;
   touch-action: manipulation;
-  color: var(--amber);
+  color: var(--path);
+  text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.15em;
 }
 
-a:hover,
-.text-button:hover,
-.listing button:hover {
+a:hover {
   color: var(--fg);
 }
 
@@ -131,35 +130,9 @@ a:hover,
   background: var(--bg);
 }
 
-.status,
 .prompt-label,
-.echo,
-.time,
-.status-path {
+.echo {
   margin: 0;
-}
-
-.status {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 0.75rem;
-  align-items: center;
-  min-height: 44px;
-  padding: calc(0.55rem + env(safe-area-inset-top)) 1rem 0.55rem;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.82rem;
-}
-
-.status-path {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.time {
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
 }
 
 .buffer {
@@ -168,175 +141,50 @@ a:hover,
   min-width: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: 1.1rem 1rem 1.4rem;
+  padding: calc(0.85rem + env(safe-area-inset-top)) 0.9rem 1rem;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
 }
 
 .entry + .entry {
-  margin-top: 1.35rem;
+  margin-top: 0.85rem;
 }
 
 .echo {
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.15rem;
   overflow-wrap: anywhere;
 }
 
 .block {
-  max-width: 46rem;
+  max-width: 68ch;
 }
 
 .line {
-  margin: 0.12rem 0;
+  margin: 0;
   overflow-wrap: anywhere;
-}
-
-.hint {
-  margin: 0.9rem 0 0;
-}
-
-.text-button {
-  text-align: left;
 }
 
 .listing {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.listing button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 2.1rem;
-  text-align: left;
-}
-
-.help,
-.records,
-.skill-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.help li {
-  display: grid;
-  grid-template-columns: 7.6rem minmax(0, 1fr);
-  gap: 0.35rem 0.8rem;
-  align-items: baseline;
-  padding: 0.28rem 0;
-}
-
-h1,
-h2,
-.project h2 {
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-
-h1 {
-  margin: 0;
-  font-size: 1.45rem;
-}
-
-h2 {
-  margin: 0 0 0.35rem;
-  font-size: 0.95rem;
-  color: var(--amber);
-}
-
-.block section + section {
-  margin-top: 1.15rem;
-}
-
-.skill-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  margin-bottom: 0.2rem;
+  column-gap: 1.35rem;
+  row-gap: 0.1rem;
 }
 
-.records li + li {
-  margin-top: 0.75rem;
-}
-
-.records p,
-.project p {
-  margin: 0;
-}
-
-.fetch {
-  display: grid;
-  gap: 1.1rem;
-}
-
-.fetch img {
-  width: 8.5rem;
-  height: 8.5rem;
-  max-width: 100%;
-  object-fit: cover;
+.shot,
+.portrait {
   display: block;
-  border: 1px solid var(--line);
-}
-
-.fetch .role {
-  margin: 0.2rem 0 0;
-}
-
-.fetch dl {
-  display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
-  gap: 0.28rem 0.75rem;
-  margin: 0.85rem 0 0;
-}
-
-.fetch dt,
-.fetch dd {
-  margin: 0;
-}
-
-.fetch dt {
-  color: var(--muted);
-}
-
-.project {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.project img {
-  width: 100%;
   height: auto;
-  display: block;
+  margin-top: 0.55rem;
   border: 1px solid var(--line);
 }
 
-.project .meta,
-.project .tone-muted {
-  overflow-wrap: anywhere;
+.shot {
+  width: min(100%, 17rem);
 }
 
-.shortcuts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  padding: 0.45rem 1rem 0.15rem;
-}
-
-.chip {
-  min-height: 44px;
-  padding: 0 0.85rem;
-  border: 1px solid var(--line);
-  background: var(--bg-raise);
-  color: var(--muted);
-}
-
-.chip:hover,
-.chip:focus-visible {
-  color: var(--fg);
-  border-color: var(--muted);
+.portrait {
+  width: min(100%, 11rem);
 }
 
 .prompt {
@@ -382,40 +230,13 @@ h2 {
   margin-top: 0.35rem;
 }
 
-@media (pointer: coarse) {
-  .listing button,
-  .help li {
-    min-height: 44px;
-  }
-}
-
 @media (min-width: 720px) {
   .buffer {
-    padding: 1.4rem 1.5rem 1.8rem;
+    padding: calc(1rem + env(safe-area-inset-top)) 1.25rem 1.2rem;
   }
 
-  .status,
-  .shortcuts,
   .prompt {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
-  .fetch {
-    grid-template-columns: 8.5rem minmax(0, 1fr);
-    align-items: start;
-  }
-
-  .project.has-image {
-    grid-template-columns: 16rem minmax(0, 1fr);
-    align-items: start;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 380px) {
-  .help li {
-    grid-template-columns: 1fr;
-    gap: 0;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 }
