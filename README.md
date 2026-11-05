@@ -1,6 +1,6 @@
 # Gabriel Rocha
 
-Portfólio em forma de terminal. Dá para digitar comandos e também tocar nos arquivos. O conteúdo vem do perfil público do GitHub e dos projetos que já estavam publicados.
+Portfólio em forma de shell. A sessão abre em inglês. O conteúdo vem do perfil público do GitHub e dos projetos que já estavam publicados.
 
 ## Local
 
@@ -35,6 +35,6 @@ GitHub Pages não sobe esse servidor Node. O deploy previsto é a Railway.
 
 ## Comandos
 
-`help` lista tudo. Os principais: `ls`, `cd`, `cat`, `projects`, `skills`, `education`, `contact`, `theme`, `mail`.
+`help` lista os comandos. `ls` lista os arquivos. `lang pt` muda para português e `lang en` volta para inglês. A escolha fica salva no navegador.
 
-Tab completa. A seta para cima recupera o comando anterior. `ctrl+l` limpa a tela. `theme` troca entre `gruvbox`, `kanagawa` e `night`.
+Tab completa. A seta para cima recupera o comando anterior. `ctrl+l` limpa a tela. `theme` troca entre `gruvbox`, `kanagawa` e `night`. Imagens aparecem quando um arquivo tem uma, como `cat portrait.jpg` ou um estudo em `projects/studies`.

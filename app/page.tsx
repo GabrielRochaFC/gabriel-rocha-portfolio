@@ -12,12 +12,12 @@ export default function Page() {
         <article className="fallback">
           <h1>{profile.name}</h1>
           {profile.about.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
+            <p key={paragraph.en}>{paragraph.en}</p>
           ))}
           <ul>
             {featured.map((project) => (
               <li key={project.slug}>
-                <a href={project.href}>{project.title}</a>
+                <a href={project.href}>{project.title.en}</a>
               </li>
             ))}
             <li>
