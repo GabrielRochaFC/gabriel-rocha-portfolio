@@ -3,6 +3,7 @@
 import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -16,10 +17,10 @@ import {
   displayPath,
   isLang,
   isThemeName,
-  motd,
   runCommand,
 } from "../lib/shell";
 import { Blocks } from "./blocks";
+import { Summary } from "./summary";
 
 const THEME_KEY = "gr-theme";
 const LANG_KEY = "gr-lang";
@@ -88,6 +89,8 @@ export function Terminal() {
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
+  const pinnedRef = useRef(true);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const bufferRef = useRef<HTMLDivElement>(null);
   const idRef = useRef(0);
@@ -125,10 +128,17 @@ export function Terminal() {
       document.documentElement.style.setProperty("--vv-offset", `${viewport.offsetTop}px`);
     };
     sync();
+    const keepPrompt = () => {
+      const buffer = bufferRef.current;
+      if (!buffer || !pinnedRef.current) return;
+      buffer.scrollTop = buffer.scrollHeight;
+    };
     viewport.addEventListener("resize", sync);
+    viewport.addEventListener("resize", keepPrompt);
     viewport.addEventListener("scroll", sync);
     return () => {
       viewport.removeEventListener("resize", sync);
+      viewport.removeEventListener("resize", keepPrompt);
       viewport.removeEventListener("scroll", sync);
     };
   }, []);
@@ -162,13 +172,6 @@ export function Terminal() {
         // private mode
       }
       setPhase("ready");
-      setEntries([
-        {
-          id: String(++idRef.current),
-          cwd: "/",
-          blocks: motd(langRef.current),
-        },
-      ]);
       if (pending && inputRef.current) {
         inputRef.current.value = pending;
         setInput(pending);
@@ -210,11 +213,11 @@ export function Terminal() {
 
   useLayoutEffect(() => {
     const buffer = bufferRef.current;
-    if (!buffer) return;
+    if (!buffer || !pinnedRef.current) return;
     buffer.scrollTop = buffer.scrollHeight;
-  }, [entries, bootShown, phase]);
+  }, [entries, bootShown, phase, input]);
 
-  function execute(command: string, duringBoot: boolean) {
+  function execute(command: string) {
     const ranAt = cwdRef.current;
     const langAt = langRef.current;
     const result = runCommand(command, ranAt, themeRef.current, langAt);
@@ -238,13 +241,9 @@ export function Terminal() {
       setLang(result.lang);
     }
     const commandId = nextId();
-    const homeId = duringBoot ? nextId() : "";
     setEntries((previous) => {
       if (result.clear) return [];
-      const base = duringBoot
-        ? [{ id: homeId, cwd: "/", blocks: motd(langAt) }]
-        : previous;
-      return [...base, { id: commandId, cwd: ranAt, command, blocks: result.blocks }];
+      return [...previous, { id: commandId, cwd: ranAt, command, blocks: result.blocks }];
     });
     setCwd(result.cwd);
     setOk(result.ok !== false);
@@ -262,12 +261,28 @@ export function Terminal() {
     if (duringBoot) skipBootRef.current();
     setInput("");
     if (!trimmed) return;
-    execute(trimmed, duringBoot);
+    execute(trimmed);
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     submitCommand(input);
+  }
+
+  function onSessionClick(event: ReactMouseEvent<HTMLElement>) {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest("a, input")) return;
+    const selection = window.getSelection();
+    if (selection && selection.toString().length > 0) return;
+    if (phaseRef.current === "boot") skipBootRef.current();
+    inputRef.current?.focus();
+  }
+
+  function onBufferScroll() {
+    const buffer = bufferRef.current;
+    if (!buffer) return;
+    pinnedRef.current = buffer.scrollHeight - buffer.scrollTop - buffer.clientHeight < 48;
   }
 
   function onKeyDown(event: ReactKeyboardEvent<HTMLInputElement>) {
@@ -339,52 +354,63 @@ export function Terminal() {
     }
   }
 
-  return (
-    <main className="session">
-      <h1 className="sr-only">Gabriel Rocha</h1>
-      <div className="buffer" ref={bufferRef} role="log" aria-live="polite" aria-relevant="additions">
-        {phase === "boot" ? (
-          <div className="entry">
-            {bootShown.map((line) => (
-              <p key={line} className="line tone-muted">
-                {line}
-              </p>
-            ))}
-          </div>
-        ) : (
-          entries.map((entry) => (
-            <article key={entry.id} className="entry">
-              {entry.command !== undefined ? <Echo command={entry.command} cwd={entry.cwd} /> : null}
-              <Blocks blocks={entry.blocks} />
-            </article>
-          ))
-        )}
-      </div>
+  const prompt = (
+    <>
+      <span className="tone-amber">{profile.user}</span>
+      <span className="tone-muted">@{profile.host}</span>{" "}
+      <span className="tone-path">{displayPath(cwd)}</span>{" "}
+      <span className={ok ? "tone-amber" : "tone-danger"}>$ </span>
+      <span>{input}</span>
+      <span aria-hidden="true" className="block-cursor" />
+    </>
+  );
 
-      <form className="prompt" onSubmit={onSubmit} aria-label={lang === "pt" ? "linha de comando" : "command line"}>
-        <p className="prompt-label">
-          <span className="tone-amber">{profile.user}</span>
-          <span className="tone-muted">@{profile.host}</span>{" "}
-          <span className="tone-path">{displayPath(cwd)}</span>{" "}
-          <span className={ok ? "tone-amber" : "tone-danger"}>$</span>
-        </p>
-        <input
-          ref={inputRef}
-          value={input}
-          onChange={(event) => {
-            setInput(event.target.value);
-            setHistoryIndex(-1);
-          }}
-          onKeyDown={onKeyDown}
-          aria-label={lang === "pt" ? "Comando" : "Command"}
-          autoCapitalize="none"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-          enterKeyHint="go"
-          inputMode="text"
-        />
-      </form>
+  return (
+    <main className="session" onClick={onSessionClick}>
+      <Summary lang={lang} />
+      <div className="buffer" onScroll={onBufferScroll} ref={bufferRef}>
+        <div aria-live="polite" aria-relevant="additions" role="log">
+          {phase === "boot" ? (
+            <div className="entry">
+              {bootShown.map((line) => (
+                <p key={line} className="line tone-muted">
+                  {line}
+                </p>
+              ))}
+            </div>
+          ) : (
+            entries.map((entry) => (
+              <article key={entry.id} className="entry">
+                {entry.command !== undefined ? <Echo command={entry.command} cwd={entry.cwd} /> : null}
+                <Blocks blocks={entry.blocks} />
+              </article>
+            ))
+          )}
+        </div>
+        <form
+          className="prompt-line"
+          onSubmit={onSubmit}
+          aria-label={lang === "pt" ? "linha de comando" : "command line"}
+        >
+          <p className="prompt-text">{prompt}</p>
+          <input
+            ref={inputRef}
+            value={input}
+            onChange={(event) => {
+              setInput(event.target.value);
+              setHistoryIndex(-1);
+            }}
+            onKeyDown={onKeyDown}
+            aria-label={lang === "pt" ? "Comando" : "Command"}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="go"
+            inputMode="text"
+          />
+        </form>
+      </div>
     </main>
   );
 }

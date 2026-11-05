@@ -130,9 +130,52 @@ a:hover {
   background: var(--bg);
 }
 
-.prompt-label,
-.echo {
+.echo,
+.prompt-text,
+.summary-role,
+.summary-hint,
+.summary dt,
+.summary dd {
   margin: 0;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 5.4rem minmax(0, 1fr);
+  gap: 0.35rem 0.9rem;
+  align-items: start;
+  padding: calc(0.75rem + env(safe-area-inset-top)) 0.9rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.summary-photo {
+  width: 5.4rem;
+  height: 5.4rem;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--line);
+}
+
+.summary h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.summary dl {
+  display: grid;
+  grid-template-columns: 6.4rem minmax(0, 1fr);
+  gap: 0.12rem 0.55rem;
+  margin: 0.45rem 0 0;
+}
+
+.summary dt {
+  color: var(--muted);
+}
+
+.summary-hint {
+  margin-top: 0.45rem;
 }
 
 .buffer {
@@ -141,7 +184,7 @@ a:hover {
   min-width: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: calc(0.85rem + env(safe-area-inset-top)) 0.9rem 1rem;
+  padding: 0.75rem 0.9rem calc(0.85rem + env(safe-area-inset-bottom));
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
 }
@@ -187,33 +230,60 @@ a:hover {
   width: min(100%, 11rem);
 }
 
-.prompt {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem 0.6rem;
-  border-top: 1px solid var(--line);
-  padding: 0.35rem 1rem calc(0.35rem + env(safe-area-inset-bottom));
+.prompt-line {
+  position: relative;
+  margin-top: 0.75rem;
 }
 
-.prompt-label {
-  white-space: nowrap;
+.prompt-text {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
-.prompt input {
-  flex: 1 1 12rem;
-  min-width: 0;
-  min-height: 44px;
-  font-size: 16px;
-  background: transparent;
-  border: 0;
+.block-cursor {
+  display: inline-block;
+  width: 0.62em;
+  height: 1.05em;
+  margin-left: 0.04em;
+  background: var(--fg);
+  vertical-align: text-bottom;
+  animation: blink 1.06s steps(2, start) infinite;
+}
+
+.prompt-line:not(:focus-within) .block-cursor {
+  animation: none;
+  opacity: 0.45;
+}
+
+.prompt-line input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   padding: 0;
-  caret-color: var(--amber);
+  border: 0;
   border-radius: 0;
+  font-size: 16px;
+  color: transparent;
+  background: transparent;
+  caret-color: transparent;
 }
 
-.prompt input:focus {
+.prompt-line input:focus {
   outline: none;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block-cursor {
+    animation: none;
+  }
 }
 
 .fallback {
@@ -231,12 +301,17 @@ a:hover {
 }
 
 @media (min-width: 720px) {
-  .buffer {
-    padding: calc(1rem + env(safe-area-inset-top)) 1.25rem 1.2rem;
+  .summary {
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    padding: calc(1rem + env(safe-area-inset-top)) 1.25rem 0.85rem;
   }
 
-  .prompt {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+  .summary-photo {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+
+  .buffer {
+    padding: 0.9rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
   }
 }
