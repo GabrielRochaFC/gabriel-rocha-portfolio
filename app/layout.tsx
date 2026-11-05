@@ -13,8 +13,7 @@ const themeScript = `(function(){try{var t=localStorage.getItem("gr-theme");if(t
 
 export const metadata: Metadata = {
   title: "Gabriel Rocha",
-  description:
-    "Desenvolvedor full stack no Brasil. TypeScript, Node.js e Next.js.",
+  description: "Full stack developer in Brazil. TypeScript, Node.js, and Next.js.",
   applicationName: "Gabriel Rocha",
   authors: [{ name: "Gabriel Rocha", url: "https://github.com/GabrielRochaFC" }],
   manifest: "/site.webmanifest",
@@ -28,10 +27,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Gabriel Rocha",
-    description:
-      "Desenvolvedor full stack no Brasil. TypeScript, Node.js e Next.js.",
+    description: "Full stack developer in Brazil. TypeScript, Node.js, and Next.js.",
     type: "website",
-    locale: "pt_BR",
+    locale: "en_US",
   },
 };
 
@@ -46,7 +44,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="pt-BR" className={mono.className} suppressHydrationWarning>
+    <html lang="en" className={mono.className} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
