@@ -1,18 +1,40 @@
-# Meu Portfólio 🚀
+# Gabriel Rocha
 
-Este é o meu portfólio, onde compartilho uma coleção dos meus projetos e trabalhos. Aqui você pode encontrar uma amostra das minhas habilidades em desenvolvimento web e design UI/UX.
+Portfólio em forma de terminal. Dá para digitar comandos e também tocar nos arquivos. O conteúdo vem do perfil público do GitHub e dos projetos que já estavam publicados.
 
-## Sobre Mim 📖
-Meu nome é Gabriel Rocha, e sou um entusiasta da tecnologia. Estou constantemente aprendendo e aprimorando minhas habilidades em desenvolvimento web e design UI/UX.
+## Local
 
-## Objetivo 🌟
-Meu objetivo com este portfólio é mostrar minha paixão pela criação e meu compromisso em fornecer soluções de alta qualidade. Estou sempre em busca de novos desafios e oportunidades de colaboração.
+```bash
+npm install
+npm run dev
+```
 
-## Como Visualizar Meu Portfólio 🌐
-Para explorar meu portfólio e conhecer mais sobre o meu trabalho, acesse [Meu Portfólio](https://gabrielrochafc.github.io/gabriel-rocha-portfolio).
+Abre em http://localhost:3000.
 
-Fique à vontade para entrar em contato comigo se tiver alguma pergunta, oportunidade de colaboração ou apenas para trocar ideias.
+Para ver a build de produção, o mesmo servidor da imagem:
 
----
+```bash
+npm run build
+npm start
+```
 
-Desenvolvido por Gabriel Rocha
+Ele escuta a variável `PORT`. Sem ela, usa a porta 3000.
+
+## Railway
+
+O repositório inclui um Dockerfile. Na Railway:
+
+1. Crie um projeto e escolha Deploy from GitHub.
+2. Selecione este repositório. A Railway usa o Dockerfile quando ele existe.
+3. Nenhuma variável de ambiente é obrigatória. A plataforma define `PORT` sozinha.
+4. Em Settings, Networking, gere um domínio.
+
+Dentro da imagem o processo é `node server.js`, na porta `PORT`, escutando em `0.0.0.0`.
+
+GitHub Pages não sobe esse servidor Node. O deploy previsto é a Railway.
+
+## Comandos
+
+`help` lista tudo. Os principais: `ls`, `cd`, `cat`, `projects`, `skills`, `education`, `contact`, `theme`, `mail`.
+
+Tab completa. A seta para cima recupera o comando anterior. `ctrl+l` limpa a tela. `theme` troca entre `gruvbox`, `kanagawa` e `night`.

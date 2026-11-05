@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.gitignore
+*.log
+Dockerfile
+README.md
+assets
+index.html
